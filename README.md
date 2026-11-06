@@ -4,7 +4,7 @@
 
 **Controlabilidade, observabilidade e projeto por Ackermann, com a conta inteira, passo a passo.**
 
-### [Abrir a aplicação →](https://lucasspinola.github.io/espaco-estados-dca3701/)
+### [Abrir a aplicação →](https://lucasspinola.github.io/controle-estados-dca3701/)
 
 ![Licença de código: MIT](https://img.shields.io/badge/c%C3%B3digo-MIT-blue) ![JavaScript](https://img.shields.io/badge/JavaScript-ES2022-f7df1e) ![Sem dependências](https://img.shields.io/badge/depend%C3%AAncias-nenhuma-brightgreen) ![Funciona offline](https://img.shields.io/badge/offline-sim-brightgreen)
 
@@ -71,8 +71,8 @@ A página usa módulos ES, então precisa ser servida por HTTP — abrir o `inde
 funciona, o navegador bloqueia `import` em `file://`.
 
 ```bash
-git clone https://github.com/LucasSpinola/espaco-estados-dca3701.git
-cd espaco-estados-dca3701
+git clone https://github.com/LucasSpinola/controle-estados-dca3701.git
+cd controle-estados-dca3701
 npm start                    # ou: python -m http.server 8000
 ```
 
