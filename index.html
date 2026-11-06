@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Espaço de estados: alocação de polos, observadores e seguidor</title>
+  <meta name="description" content="Controlabilidade, observabilidade, alocação de polos por Ackermann, observador de estados e seguidor de referência, com a memória de cálculo completa.">
+  <meta name="author" content="Lucas Augusto Spinola Pinto">
+  <link rel="icon" href="assets/img/dca.gif">
+  <link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="assets/css/estilo.css">
+  <script defer src="assets/vendor/katex/katex.min.js"></script>
+  <script type="module" src="assets/js/principal.js"></script>
+</head>
+<body>
+  <header class="barra">
+    <div class="barra-interna">
+      <div class="marcas">
+        <img class="marca marca-ufrn" src="assets/img/ufrn.png"
+             alt="Universidade Federal do Rio Grande do Norte">
+        <span class="marcas-divisor" aria-hidden="true"></span>
+        <img class="marca marca-dca" src="assets/img/dca.gif"
+             alt="Departamento de Engenharia de Computação e Automação">
+      </div>
+      <p class="barra-texto">
+        Departamento de Engenharia de Computação e Automação
+        <span>Universidade Federal do Rio Grande do Norte</span>
+      </p>
+    </div>
+  </header>
+
+  <div class="cabecalho-impressao">
+    <strong>DCA-3701 · Espaço de estados: alocação de polos, observador e seguidor</strong>
+    <span>Lucas Augusto Spinola Pinto</span>
+  </div>
+
+  <section class="capa">
+    <div class="capa-interna">
+      <div class="capa-texto">
+        <p class="etiqueta">DCA-3701 · Projeto de Sistemas de Controle · 3ª unidade</p>
+        <h1>Espaço de estados: alocação de polos, observador e seguidor</h1>
+        <p class="capa-legenda" data-formatar>
+          Informe o sistema por $\mathbf{A}$, $\mathbf{B}$ e $\mathbf{C}$ ou por $G(s)$. A página monta a
+          forma canônica, acha o polinômio característico, testa controlabilidade e observabilidade e
+          projeta $\mathbf{K}$, $\mathbf{L}$ e o seguidor de referência por Ackermann.
+        </p>
+        <p class="assinatura">
+          <span class="assinatura-inicial" aria-hidden="true">LP</span>
+          <span class="assinatura-corpo">
+            <span class="assinatura-nome">Lucas Augusto Spinola Pinto</span>
+            <span class="assinatura-papel">Autor</span>
+          </span>
+        </p>
+      </div>
+
+      <figure class="capa-figura">
+        <figcaption class="capa-figura-titulo">Polos da planta</figcaption>
+        <div class="capa-figura-plano" id="miniatura"></div>
+      </figure>
+    </div>
+  </section>
+
+  <main class="conteudo">
+    <form id="formulario" class="painel">
+      <div class="exemplos">
+        <span class="exemplos-rotulo">Questões da lista</span>
+        <div id="exemplos" class="exemplos-lista"></div>
+      </div>
+
+      <div class="colunas colunas-2 blocos">
+        <fieldset class="grupo">
+          <legend>Sistema</legend>
+          <label class="campo">
+            <span>Informar por</span>
+            <select id="fonte">
+              <option value="matrizes" selected>Matrizes A, B e C</option>
+              <option value="transferencia">Função de transferência G(s)</option>
+            </select>
+          </label>
+
+          <div data-fonte="matrizes">
+            <label class="campo">
+              <span>Matriz A (linhas separadas por ;)</span>
+              <input id="matriz-a" type="text" value="-4 3 0; -1 -4 -1; 0 0 -2"
+                     autocomplete="off" spellcheck="false">
+            </label>
+            <div class="campos-duplos">
+              <label class="campo">
+                <span>Matriz B (coluna)</span>
+                <input id="matriz-b" type="text" value="0; 0; 3" autocomplete="off" spellcheck="false">
+              </label>
+              <label class="campo">
+                <span>Matriz C (linha)</span>
+                <input id="matriz-c" type="text" value="1 0 0" autocomplete="off" spellcheck="false">
+              </label>
+            </div>
+          </div>
+
+          <div data-fonte="transferencia" hidden>
+            <div class="campos-duplos">
+              <label class="campo">
+                <span>Numerador de G(s)</span>
+                <input id="numerador" type="text" value="3 4 -2" autocomplete="off" spellcheck="false">
+              </label>
+              <label class="campo">
+                <span>Denominador de G(s)</span>
+                <input id="denominador" type="text" value="1 3 7 5" autocomplete="off" spellcheck="false">
+              </label>
+            </div>
+            <label class="campo">
+              <span>Representação</span>
+              <select id="forma">
+                <option value="controlavel" selected>Forma canônica controlável</option>
+                <option value="observavel">Forma canônica observável</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="previa" id="previa-planta"></div>
+        </fieldset>
+
+        <fieldset class="grupo">
+          <legend>Projeto</legend>
+          <label class="campo">
+            <span>Objetivo</span>
+            <select id="objetivo">
+              <option value="analise" selected>Análise: estabilidade, controlabilidade e observabilidade</option>
+              <option value="realimentacao">Realimentação de estados, u = Kx</option>
+              <option value="observador">Observador de estados</option>
+              <option value="completo">Realimentação de estados e observador</option>
+              <option value="seguidor">Seguidor de referência para degrau</option>
+            </select>
+          </label>
+
+          <label class="campo" data-polos="polosK" hidden>
+            <span>Polos de malha fechada desejados</span>
+            <input id="polos-k" type="text" value="-2±1i, -10" autocomplete="off" spellcheck="false">
+          </label>
+          <label class="campo" data-polos="polosL" hidden>
+            <span>Polos do observador desejados</span>
+            <input id="polos-l" type="text" value="-1±1i, -10" autocomplete="off" spellcheck="false">
+          </label>
+          <label class="campo" data-polos="polosSeguidor" hidden>
+            <span>Polos do seguidor (n + 1 polos)</span>
+            <input id="polos-seguidor" type="text" value="-1±0,1i, -5, -12" autocomplete="off" spellcheck="false">
+          </label>
+
+          <p class="dica" data-sem-polos>
+            A análise não pede polos: ela só devolve o polinômio característico e as matrizes
+            <strong>U</strong> e <strong>V</strong>.
+          </p>
+          <div class="previa" id="previa-polos"></div>
+        </fieldset>
+      </div>
+
+      <p class="dica">
+        Nas matrizes, <code>;</code> separa as linhas e o espaço separa os elementos:
+        <code>-4 3 0; -1 -4 -1; 0 0 -2</code>. Em G(s), vale a expressão, como <code>s(s+3)</code>, ou os
+        coeficientes em ordem decrescente de s. Nos polos, use vírgula entre eles e <code>±</code> para o
+        par conjugado: <code>-1±0,1i, -5, -12</code>.
+      </p>
+
+      <button class="botao" type="submit">Resolver</button>
+    </form>
+
+    <section class="roteiro" id="roteiro">
+      <h2 class="roteiro-titulo">O que você vai ver</h2>
+      <ol class="roteiro-lista" id="roteiro-lista"></ol>
+    </section>
+
+    <div id="resultado" class="resultado"></div>
+    <div id="impressao" class="resultado impressao"></div>
+  </main>
+</body>
+</html>

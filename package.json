@@ -1,0 +1,11 @@
+{
+  "name": "espaco-estados-controle",
+  "version": "1.0.0",
+  "description": "Controlabilidade, observabilidade, alocação de polos, observador e seguidor de referência em espaço de estados.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "npx --yes serve . -l 8000",
+    "teste": "node testes/executar.js && node testes/matrizes.js && node testes/interface.js"
+  }
+}
