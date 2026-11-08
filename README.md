@@ -67,7 +67,7 @@ bibliografia.
 
 ## Rodar local
 
-A página usa módulos ES, então precisa ser servida por HTTP — abrir o `index.html` direto do disco não
+A página usa módulos ES, então precisa ser servida por HTTP. Abrir o `index.html` direto do disco não
 funciona, o navegador bloqueia `import` em `file://`.
 
 ```bash
@@ -79,10 +79,10 @@ npm start                    # ou: python -m http.server 8000
 Depois abra <http://localhost:8000>.
 
 **Como usar:** escolha informar por matrizes ou por $G(s)$. Nas matrizes, `;` separa as linhas e o
-espaço separa os elementos — `-4 3 0; -1 -4 -1; 0 0 -2`. Em $G(s)$, vale a expressão, como `s(s+3)`, ou
-os coeficientes em ordem decrescente de $s$. Escolha o objetivo, informe os polos desejados com vírgula
-entre eles e `±` para o par conjugado — `-1±0,1i, -5, -12` — e clique em **Resolver**. O seguidor pede
-$n+1$ polos, porque o integrador do erro acrescenta um estado.
+espaço separa os elementos, como em `-4 3 0; -1 -4 -1; 0 0 -2`. Em $G(s)$, vale a expressão, como
+`s(s+3)`, ou os coeficientes em ordem decrescente de $s$. Escolha o objetivo, informe os polos
+desejados com vírgula entre eles e `±` para o par conjugado, por exemplo `-1±0,1i, -5, -12`, e clique
+em **Resolver**. O seguidor pede $n+1$ polos, porque o integrador do erro acrescenta um estado.
 
 **PDF:** o botão **Baixar PDF**, acima do resultado, e o **PDF da lista**, ao lado das questões, abrem a
 impressão do navegador. Escolha **Salvar como PDF** no destino. Todos os passos saem abertos, com os
